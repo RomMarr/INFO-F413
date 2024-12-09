@@ -12,3 +12,17 @@ Output : a cut C
     c) Recursively compute cuts in each of H1 and H2
     d) Return the minimum (smaller) of the two cuts 
 """
+import math
+from contract import Contract
+
+def FastCut(G):
+    n = G.get_nb_nodes()
+    if n <= 6:
+        return Contract(G, 2) # min cut by brute force
+    else:
+        t =  math.ceil(1 + (n/math.sqrt(2)))
+        H1 = Contract(G, t)
+        H2 = Contract(G, t)
+        cut1 = FastCut(H1)
+        cut2 = FastCut(H2)
+        return min(len(cut1), len(cut2))

@@ -10,7 +10,7 @@ class Edge:
         else :
             return self.start_node 
 
-class Nodes:
+class Node:
     def __init__(self, id):
         self.id = id
         self.edges : list[Edge] = []
@@ -28,13 +28,17 @@ class Nodes:
 
 class Graph:
     def __init__(self):
-        self.nodes : list[Nodes] = []
+        self.nodes : list[Node] = []
         self.edges : list[Edge] = []
         #self.set_edges()
 
     def get_nb_nodes(self):
         return len(self.nodes)
     
+    def add_node(self, node):
+        self.nodes.append(node)
+
+
     def set_edges(self):
         for node in self.nodes:
             for edge in node.get_edges():
@@ -42,12 +46,13 @@ class Graph:
                     self.edges.append(edge)
             
     def contract_edge(self, edge):
-        neighbors = []
         node1 = edge.start_node
         node2 = edge.end_node
-        neighbors1 = node1.get_neighbors()
-        neighbors2 = node2.get_neighbors()
-        pass
+        new_edges = node1.get_edges()
+        for edge in new_edges:
+            if edge.start_node == node2 or edge.end_node == node2:
+                new_edges.remove(edge)
+        node2.edges.extend(new_edges)
         
     
             

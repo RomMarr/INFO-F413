@@ -10,11 +10,14 @@ Output : a cut C
 import random
 from graph import Graph, Edge
 
-def Contract(G : Graph, t = None) -> list[Edge]:
+def Contract(G : Graph, t = None) :
    min_nb : int = 2 if t == None else t  # min number of nodes
    n = G.get_nb_nodes()
+   print("min_nb = ", min_nb, "n = ", n)
    for _ in range(1, n-1): # can be changed to a while G.get_nb_nodes() > min_nb
+      print("i", _)
       edge = random.choice(G.edges)
+      print("edge", edge.id)
       G.contract_edge(edge)
       if G.get_nb_nodes() == min_nb:
          return G.edges

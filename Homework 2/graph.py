@@ -52,7 +52,13 @@ class Graph:
         for edge in new_edges:
             if edge.start_node == node2 or edge.end_node == node2:
                 new_edges.remove(edge)
+            else : 
+                if edge.start_node == node1:
+                    edge.start_node = node2
+                else:
+                    edge.end_node = node2
         node2.edges.extend(new_edges)
+        self.nodes.remove(node1)
         
     
             

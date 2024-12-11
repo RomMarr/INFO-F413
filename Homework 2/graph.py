@@ -3,6 +3,15 @@ class Edge:
         self.id = id
         self.start_node = start_node
         self.end_node = end_node 
+    
+    def __eq__(self, other):
+        return (isinstance(other, Edge) and 
+                self.id == other.id and
+                self.start_node == other.start_node and
+                self.end_node == other.end_node)
+    
+    def __hash__(self):
+        return hash((self.id, self.start_node, self.end_node))
         
     def get_node(self, node):
         if node == self.start_node:
@@ -19,11 +28,20 @@ class Node:
         self.edges : list[Edge] = []
         #self.marked = False  # True if node has been visited
 
+    def __eq__(self, other):
+        return isinstance(other, Node) and self.id == other.id
+    
+    def __hash__(self):
+        return hash(self.id)
+
     def get_edges(self):
         return self.edges
     
+    def add_edge(self, edge):
+        self.edges.append(edge)
+    
     def set_edges(self, edges):
-        self.edges.append(edges)
+        self.edges = edges
     
     def get_neighbors(self):
         neighbors = []
@@ -33,10 +51,25 @@ class Node:
 
 
 class Graph:
-    def __init__(self):
+    def __init__(self, edges = None):
         self.nodes : list[Node] = []
         self.edges : list[Edge] = []
-        #self.set_edges()
+        if edges is not None:
+            self.create_graph_from_edges(edges)
+
+
+    def create_graph_from_edges(self, edges):
+        print("Creating graph from edges")
+        for edge in edges:
+            if edge.start_node not in self.nodes:
+                print("1.Adding node", edge.start_node.id)
+                self.nodes.append(edge.start_node)
+            if edge.end_node not in self.nodes:
+                print("2.Adding node", edge.end_node.id)
+                self.nodes.append(edge.end_node)
+            if edge not in self.edges:
+                print("Adding edge", edge.id)
+                self.edges.append(edge)
 
     def get_nb_nodes(self):
         return len(self.nodes)
@@ -52,23 +85,30 @@ class Graph:
                     self.edges.append(edge)
             
     def contract_edge(self, edge):
+        print("Nodes before removal:", [node.id for node in self.nodes])
+        print("To remove : ", edge.start_node.id, edge.end_node.id)
+        edges_to_update = []
+        edges_to_remove = []
         node1 = edge.start_node
         node2 = edge.end_node
-        new_node = Node(node1.id+ "$" +node2.id)
-        new_edges = node1.get_edges()
-        new_edges.extend(node2.get_edges())
-        for edge in new_edges:
-            if (edge.create_loops(node1, node2)): # remove the edge between node1 and node2
-                new_edges.remove(edge)
-                self.edges.remove(edge)
-            else : # update the edge to connect to the new node instead of node1 or node2
-                if edge.start_node == node1 or edge.start_node == node2:
-                    edge.start_node = new_node
-                else:
-                    edge.end_node = new_node
-        new_node.set_edges(new_edges)
-        self.nodes.remove(node1)
+        for e in self.edges:  # Identify edges connected to the nodes being contracted
+            if e.start_node in (node1, node2) or e.end_node in (node1, node2):
+                if e.create_loops(node1, node2):  # Self-loop check
+                    edges_to_remove.append(e)
+                else:  # Edge to be updated (to connect to the new node)
+                    edges_to_update.append(e)
+
+        new_node = Node(node1.id + "$" + node2.id)  # Create a new node (contracted node)
+        for e in edges_to_update:  # Update edges to connect to the new node
+            if e.start_node in (node1, node2): 
+                e.start_node = new_node
+            if e.end_node in (node1, node2):
+                e.end_node = new_node
+
+        for e in edges_to_remove:  # Remove self-loops from edges and update graph structure
+            self.edges.remove(e)
+
+        new_node.set_edges(edges_to_update)  # Set the edges of the new node
+        self.nodes.append(new_node)  # Add the new node to the graph
+        self.nodes.remove(node1)  # Remove the old nodes
         self.nodes.remove(node2)
-        
-    
-            

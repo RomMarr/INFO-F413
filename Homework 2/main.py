@@ -1,9 +1,11 @@
 from contract import Contract
+from fastCut import FastCut
 from graph import Graph, Node, Edge
+from plot import plot_graph
 
-def main():
+def create_complete_graph(n):
     # Create nodes
-    nodes = [Node(id=i) for i in range(1, 7)]  # Create 6 nodes
+    nodes = [Node(id=str(i)) for i in range(1, n+1)]  # Create 5 nodes with string IDs
 
     # Create edges (complete graph: every pair of nodes is connected)
     edges = []
@@ -21,32 +23,10 @@ def main():
     for node in nodes:
         graph.add_node(node)
     for edge in edges:
-        graph.add_edge(edge)
+        graph.edges.append(edge)
+    return graph
 
-    # Output the graph information
-    print("Number of nodes:", graph.get_nb_nodes())
-    print("Number of edges:", graph.get_nb_edges())
-
-    print("Edges in the graph:")
-    for edge in graph.edges.values():
-        print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
-
-    print("Neighbors of each node:")
-    for node in graph.nodes.values():
-        neighbors = [neighbor.id for neighbor in node.get_neighbors()]
-        print(f"Node {node.id}: {neighbors}")
-
-    # Contract an edge
-    Contract(graph)
-
-    # Display graph state after contraction
-    print("\nAfter contracting edge 1:")
-    print("Nodes:", graph.get_nb_nodes())
-    print("Edges:", graph.get_nb_edges())
-
-
-def printInfos(graph):
-    # Output the graph information
+def printInfo(graph):
     print("Number of nodes:", graph.get_nb_nodes())
     print("Number of edges:", len(graph.edges))
 
@@ -57,7 +37,21 @@ def printInfos(graph):
     print("Neighbors of each node:")
     for node in graph.nodes:
         neighbors = [neighbor.id for neighbor in node.get_neighbors()]
-    print(f"Node {node.id}: {neighbors}")
+        print(f"Node {node.id}: {neighbors}")
+
+
+def main():
+    graph = create_complete_graph(10)
+    printInfo(graph)
+    print()
+    temp = FastCut(graph)
+    print("Edges in the cut:", [edge.id for edge in temp])
+    print()
+    printInfo(graph)
+
+
+
+
 
 if __name__ == "__main__":
     main()

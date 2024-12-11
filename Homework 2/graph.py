@@ -9,15 +9,21 @@ class Edge:
             return self.end_node
         else :
             return self.start_node 
+        
+    def create_loops(self, node1, node2):
+        return (self.start_node == node1 and self.end_node == node2) or (self.start_node == node2 and self.end_node == node1)
 
 class Node:
     def __init__(self, id):
-        self.id = id
+        self.id : str = id
         self.edges : list[Edge] = []
-        self.marked = False  # True if node has been visited
+        #self.marked = False  # True if node has been visited
 
     def get_edges(self):
         return self.edges
+    
+    def set_edges(self, edges):
+        self.edges.append(edges)
     
     def get_neighbors(self):
         neighbors = []
@@ -48,17 +54,21 @@ class Graph:
     def contract_edge(self, edge):
         node1 = edge.start_node
         node2 = edge.end_node
+        new_node = Node(node1.id+ "$" +node2.id)
         new_edges = node1.get_edges()
+        new_edges.extend(node2.get_edges())
         for edge in new_edges:
-            if edge.start_node == node2 or edge.end_node == node2:
+            if (edge.create_loops(node1, node2)): # remove the edge between node1 and node2
                 new_edges.remove(edge)
-            else : 
-                if edge.start_node == node1:
-                    edge.start_node = node2
+                self.edges.remove(edge)
+            else : # update the edge to connect to the new node instead of node1 or node2
+                if edge.start_node == node1 or edge.start_node == node2:
+                    edge.start_node = new_node
                 else:
-                    edge.end_node = node2
-        node2.edges.extend(new_edges)
+                    edge.end_node = new_node
+        new_node.set_edges(new_edges)
         self.nodes.remove(node1)
+        self.nodes.remove(node2)
         
     
             

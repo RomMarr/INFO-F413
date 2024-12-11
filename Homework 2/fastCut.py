@@ -14,8 +14,9 @@ Output : a cut C
 """
 import math
 from contract import Contract
+from graph import Graph, Edge
 
-def FastCut(G):
+def FastCut(G) -> list[Edge]:
     n = G.get_nb_nodes()
     if n <= 6:
         return Contract(G, 2) # min cut by brute force
@@ -23,6 +24,6 @@ def FastCut(G):
         t =  math.ceil(1 + (n/math.sqrt(2)))
         H1 = Contract(G, t)
         H2 = Contract(G, t)
-        cut1 = FastCut(H1)
-        cut2 = FastCut(H2)
-        return min(len(cut1), len(cut2))
+        cut1 : list[Edge] = FastCut(H1)
+        cut2 : list[Edge] = FastCut(H2)
+        return cut1 if len(cut1) <= len(cut2) else cut2

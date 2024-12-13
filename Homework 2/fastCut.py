@@ -15,6 +15,7 @@ Output : a cut C
 import math
 from contract import Contract
 from graph import Graph, Edge
+from copy import deepcopy
 
 def FastCut(G: Graph) -> list[Edge]:
     n = G.get_nb_nodes()
@@ -24,10 +25,11 @@ def FastCut(G: Graph) -> list[Edge]:
     else:
         print("n > 6")
         t =  math.ceil(1 + (n/math.sqrt(2)))
+        graph_copy = deepcopy(G)
         print("t =", t)
         H1 = Graph(Contract(G, t))
         print("H1 created")
-        H2 = Graph(Contract(G, t))
+        H2 = Graph(Contract(graph_copy, t))
         print("H2 created")
         cut1 : list[Edge] = FastCut(H1)
         cut2 : list[Edge] = FastCut(H2)

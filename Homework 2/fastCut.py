@@ -23,9 +23,10 @@ def FastCut(G: Graph) -> list[Edge]:
         return Contract(G, 2) # min cut by brute force
     else:
         t =  math.ceil(1 + (n/math.sqrt(2)))
-        graph_copy = deepcopy(G)
-        H1 = Graph(Contract(G, t))
-        H2 = Graph(Contract(graph_copy, t))
+        g1 = deepcopy(G)
+        g2 = deepcopy(G)
+        H1 = Graph(Contract(g1, t))
+        H2 = Graph(Contract(g2, t))
         cut1 : list[Edge] = FastCut(H1)
         cut2 : list[Edge] = FastCut(H2)
         return cut1 if len(cut1) <= len(cut2) else cut2

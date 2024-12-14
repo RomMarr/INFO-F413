@@ -12,8 +12,9 @@ from graph import Graph, Edge
 
 def Contract(G : Graph, t = None) :
    min_nb : int = 2 if t == None else t  # min number of nodes
-   n = G.get_nb_nodes()
-   for _ in range(1, n-1): # can be changed to a while G.get_nb_nodes() > min_nb
+   #n = G.get_nb_nodes()
+   #for _ in range(1, n-1): # can be changed to a while G.get_nb_nodes() > min_nb
+   while G.get_nb_nodes() > min_nb:
       edge = random.choice(G.edges)
       G.contract_edge(edge)
       if G.get_nb_nodes() == min_nb:

@@ -59,16 +59,16 @@ class Graph:
 
 
     def create_graph_from_edges(self, edges):
-        print("Creating graph from edges")
+        #print("Creating graph from edges")
         for edge in edges:
             if edge.start_node not in self.nodes:
-                print("1.Adding node", edge.start_node.id)
+                #print("1.Adding node", edge.start_node.id)
                 self.nodes.append(edge.start_node)
             if edge.end_node not in self.nodes:
-                print("2.Adding node", edge.end_node.id)
+                #print("2.Adding node", edge.end_node.id)
                 self.nodes.append(edge.end_node)
             if edge not in self.edges:
-                print("Adding edge", edge.id)
+                #print("Adding edge", edge.id)
                 self.edges.append(edge)
 
     def get_nb_nodes(self):
@@ -85,8 +85,8 @@ class Graph:
                     self.edges.append(edge)
             
     def contract_edge(self, edge):
-        print("Nodes before removal:", [node.id for node in self.nodes])
-        print("To remove : ", edge.start_node.id, edge.end_node.id)
+        # print("Nodes before removal:", [node.id for node in self.nodes])
+        # print("To remove : ", edge.start_node.id, edge.end_node.id)
         edges_to_update = []
         edges_to_remove = []
         node1 = edge.start_node

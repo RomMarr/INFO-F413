@@ -46,8 +46,8 @@ def main():
     print()
     temp = FastCut(graph)
     print("Edges in the cut:", [edge.id for edge in temp])
-    print()
-    printInfo(graph)
+    print("Nodes in the cut:", [edge.start_node.id for edge in temp] + [temp[-1].end_node.id])
+
 
 
 

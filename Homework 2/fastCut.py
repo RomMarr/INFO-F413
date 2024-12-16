@@ -34,7 +34,9 @@ def fastCut(G: Graph) -> list[Edge]:
 
 def fastCut2(G: Graph) -> list[Edge]:
     n = G.get_nb_nodes()
+    print("n:", n)
     if n <= 6:
+        print("here")
         return contract(G,2) # min cut by brute force
     else:
         t :int =  math.ceil(1 + (n/math.sqrt(2)))
@@ -42,8 +44,9 @@ def fastCut2(G: Graph) -> list[Edge]:
         g2 : Graph = deepcopy(G)
         H1 = Graph(contract(g1, t))
         H2 = Graph(contract(g2, t))
-        cut1 : list[Edge] = fastCut(H1)
-        cut2 : list[Edge] = fastCut(H2)
+        print("lalala")
+        cut1 : list[Edge] = fastCut2(H1)
+        cut2 : list[Edge] = fastCut2(H2)
         return cut1 if len(cut1) <= len(cut2) else cut2
 
 from itertools import combinations

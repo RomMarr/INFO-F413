@@ -13,20 +13,67 @@ Output : a cut C
     d) Return the minimum (smaller) of the two cuts 
 """
 import math
-from contract import Contract
+from contract import contract
 from graph import Graph, Edge
 from copy import deepcopy
 
-def FastCut(G: Graph) -> list[Edge]:
+def fastCut(G: Graph) -> list[Edge]:
     n = G.get_nb_nodes()
     if n <= 6:
-        return Contract(G, 2) # min cut by brute force
+        return minCutBruteForce(G) # min cut by brute force
     else:
-        t =  math.ceil(1 + (n/math.sqrt(2)))
-        g1 = deepcopy(G)
-        g2 = deepcopy(G)
-        H1 = Graph(Contract(g1, t))
-        H2 = Graph(Contract(g2, t))
-        cut1 : list[Edge] = FastCut(H1)
-        cut2 : list[Edge] = FastCut(H2)
+        t :int =  math.ceil(1 + (n/math.sqrt(2)))
+        g1 : Graph = deepcopy(G)
+        g2 : Graph = deepcopy(G)
+        H1 = Graph(contract(g1, t))
+        H2 = Graph(contract(g2, t))
+        cut1 : list[Edge] = fastCut(H1)
+        cut2 : list[Edge] = fastCut(H2)
         return cut1 if len(cut1) <= len(cut2) else cut2
+    
+
+def fastCut2(G: Graph) -> list[Edge]:
+    n = G.get_nb_nodes()
+    if n <= 6:
+        return contract(G,2) # min cut by brute force
+    else:
+        t :int =  math.ceil(1 + (n/math.sqrt(2)))
+        g1 : Graph = deepcopy(G)
+        g2 : Graph = deepcopy(G)
+        H1 = Graph(contract(g1, t))
+        H2 = Graph(contract(g2, t))
+        cut1 : list[Edge] = fastCut(H1)
+        cut2 : list[Edge] = fastCut(H2)
+        return cut1 if len(cut1) <= len(cut2) else cut2
+
+from itertools import combinations
+
+def minCutBruteForce(graph: Graph) -> list[Edge]:
+    """
+    Compute the minimum cut of a small graph (n <= 6) using brute force.
+    :param graph: An instance of the Graph class
+    :return: (min_cut_edges, best_partition) - List of edges in the minimum cut and the corresponding partition
+    """
+    nodes = graph.nodes
+    n = len(nodes)
+    min_cut_edges = []
+    min_cut_value = float('inf')
+
+    # Generate all possible subsets S of nodes (except empty and full)
+    for i in range(1, n):  # Subset sizes from 1 to n-1
+        for subset in combinations(nodes, i):
+            S = set(subset)
+            T = set(nodes) - S  # The complementary subset
+
+            # Calculate the edges crossing the cut
+            cut_edges = []
+            for edge in graph.edges:
+                if (edge.start_node in S and edge.end_node in T) or (edge.start_node in T and edge.end_node in S):
+                     cut_edges.append(edge)
+
+            # Update the minimum cut if this one is better
+            if len(cut_edges) < min_cut_value:
+                min_cut_value = len(cut_edges)
+                min_cut_edges = cut_edges
+
+    return min_cut_edges

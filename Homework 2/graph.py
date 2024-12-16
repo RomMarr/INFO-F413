@@ -1,17 +1,17 @@
 class Edge:
     def __init__(self, id, start_node, end_node):
-        self.id = id
-        self.start_node = start_node
-        self.end_node = end_node 
+        self.id : int = id
+        self.start_node : Node = start_node
+        self.end_node : Node = end_node 
     
-    def __eq__(self, other):
-        return (isinstance(other, Edge) and 
-                self.id == other.id and
-                self.start_node == other.start_node and
-                self.end_node == other.end_node)
+    # def __eq__(self, other):
+    #     return (isinstance(other, Edge) and 
+    #             self.id == other.id and
+    #             self.start_node == other.start_node and
+    #             self.end_node == other.end_node)
     
-    def __hash__(self):
-        return hash((self.id, self.start_node, self.end_node))
+    # def __hash__(self):
+    #     return hash((self.id, self.start_node, self.end_node))
         
     def get_node(self, node):
         if node == self.start_node:
@@ -28,11 +28,11 @@ class Node:
         self.edges : list[Edge] = []
         #self.marked = False  # True if node has been visited
 
-    def __eq__(self, other):
-        return isinstance(other, Node) and self.id == other.id
+    # def __eq__(self, other):
+    #     return isinstance(other, Node) and self.id == other.id
     
-    def __hash__(self):
-        return hash(self.id)
+    # def __hash__(self):
+    #     return hash(self.id)
 
     def get_edges(self):
         return self.edges
@@ -44,7 +44,7 @@ class Node:
         self.edges = edges
     
     def get_neighbors(self):
-        neighbors = []
+        neighbors :list[Node] = []
         for edge in self.edges:
             neighbors.append(edge.get_node(self))
         return neighbors
@@ -87,10 +87,10 @@ class Graph:
     def contract_edge(self, edge):
         # print("Nodes before removal:", [node.id for node in self.nodes])
         # print("To remove : ", edge.start_node.id, edge.end_node.id)
-        edges_to_update = []
-        edges_to_remove = []
-        node1 = edge.start_node
-        node2 = edge.end_node
+        edges_to_update : list[Edge] = []
+        edges_to_remove : list[Edge] = []
+        node1 : Node = edge.start_node
+        node2 : Node = edge.end_node
         for e in self.edges:  # Identify edges connected to the nodes being contracted
             if e.start_node in (node1, node2) or e.end_node in (node1, node2):
                 if e.create_loops(node1, node2):  # Self-loop check

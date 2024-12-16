@@ -65,17 +65,17 @@ def test(n):
 
 def main():
     #test(100)
-    graph = complete_graph(6)
+    graph = multigraph(6, 11)
     draw_graph(graph)
     #printInfo(graph)
     # print()
-    # temp = fastCut2(deepcopy(graph))
+    temp = fastCut2(deepcopy(graph))
     # new_graph = Graph(temp)
-    # count = 0
-    # for edge in temp:
-    #     count += 1
-    #     print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
-    # print(f"Cut {count} : {prepare_node(temp)}")
+    count = 0
+    for edge in temp:
+        count += 1
+        print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
+    print(f"Cut {count} : {prepare_node(temp)}")
     # draw_graph(new_graph)
     
 

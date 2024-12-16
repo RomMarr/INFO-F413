@@ -82,3 +82,110 @@ def bipartite_graph(set1_size, set2_size, edge_probability=0.5):
     # Create the graph
     bipartite_graph = Graph(edges)
     return bipartite_graph
+
+
+def tree_graph(n):
+    """
+    Generates a random tree with 'n' nodes.
+    
+    :param n: Number of nodes in the tree.
+    :return: A NetworkX graph object representing the tree.
+    """
+    # Create an empty graph
+    tree = Graph()  # Create an empty graph
+    
+    # Add the first node
+    root = Node("0")
+    tree.add_node(root)
+    
+    # Add subsequent nodes
+    for i in range(1, n):
+        parent_node = random.choice(tree.nodes)  # Pick a random parent node
+        new_node = Node(str(i))
+        edge_id = len(tree.edges)  # Edge id as the current number of edges
+        edge = Edge(edge_id, parent_node, new_node)
+
+        parent_node.add_edge(edge)  # Add edge to the parent node's edge list
+        new_node.add_edge(edge)  # Add edge to the new node's edge list
+        tree.add_node(new_node)  # Add the new node to the tree
+        tree.set_edges()
+
+    return tree
+
+def cycle_graph(n):
+    """
+    Generates a cycle graph with n nodes.
+    
+    :param n: Number of nodes in the cycle graph
+    :return: A Graph object representing the cycle graph
+    """
+    nodes = [Node(str(i)) for i in range(n)]
+    edges = []
+    
+    for i in range(n):
+        start_node = nodes[i]
+        end_node = nodes[(i + 1) % n]  # Ensures that the last node connects back to the first node
+        edge = Edge(i, start_node, end_node)
+        start_node.add_edge(edge)
+        end_node.add_edge(edge)
+        edges.append(edge)
+    
+    graph = Graph(edges)
+    return graph
+
+def multigraph(n, m):
+    """
+    Generates a multigraph with n nodes and m random edges, allowing multiple edges between nodes.
+    
+    :param n: Number of nodes in the graph
+    :param m: Number of edges in the multigraph
+    :return: A Graph object representing the multigraph
+    """
+    nodes = [Node(str(i)) for i in range(n)]
+    edges = []
+    
+    for i in range(m):
+        start_node = random.choice(nodes)
+        end_node = random.choice(nodes)
+        # Ensure there are multiple edges (if needed)
+        edge = Edge(i, start_node, end_node)
+        start_node.add_edge(edge)
+        end_node.add_edge(edge)
+        edges.append(edge)
+    
+    graph = Graph(edges)
+    return graph
+
+def planar_graph(n, m):  # n = number of nodes, m = number of edges
+    """
+    Generates a planar graph by starting with a tree and adding edges to ensure planarity.
+    
+    :param n: Number of nodes in the graph
+    :param m: Number of edges in the planar graph
+    :return: A Graph object representing the planar graph
+    """
+    nodes = [Node(str(i)) for i in range(n)]
+    edges = []
+    
+    # Start by creating a tree (a connected acyclic graph)
+    for i in range(1, n):
+        start_node = nodes[i - 1]
+        end_node = nodes[i]
+        edge = Edge(i, start_node, end_node)
+        start_node.add_edge(edge)
+        end_node.add_edge(edge)
+        edges.append(edge)
+    
+    # Add additional edges while maintaining planarity
+    while len(edges) < m:
+        start_node = random.choice(nodes)
+        end_node = random.choice(nodes)
+        if start_node != end_node:
+            # Add the edge only if it doesn't create a cycle
+            edge = Edge(len(edges), start_node, end_node)
+            start_node.add_edge(edge)
+            end_node.add_edge(edge)
+            edges.append(edge)
+    
+    graph = Graph(edges)
+    return graph

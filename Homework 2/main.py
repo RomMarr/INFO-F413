@@ -64,9 +64,9 @@ def test(n):
     print(moyenne)
 
 def main():
-    test(100)
-    #graph = complete_graph(10)
-    #draw_graph(graph)
+    #test(100)
+    graph = complete_graph(6)
+    draw_graph(graph)
     #printInfo(graph)
     # print()
     # temp = fastCut2(deepcopy(graph))

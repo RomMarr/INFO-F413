@@ -7,7 +7,7 @@ import networkx as nx
 
 def draw_graph(graph):
     """
-    Draws the graph with edge IDs labeled between nodes and ensures it stays in the drawing window.
+    Draws the graph with curved edges between nodes and ensures it stays in the drawing window.
     
     :param graph: A Graph object with nodes and edges
     """
@@ -17,7 +17,7 @@ def draw_graph(graph):
     for node in graph.nodes:
         G.add_node(node.id)  # Add nodes using their IDs
     for edge in graph.edges:
-        G.add_edge(edge.start_node.id, edge.end_node.id, id=edge.id)  # Add edges using the node IDs, with edge ID as attribute
+        G.add_edge(edge.start_node.id, edge.end_node.id)  # Add edges using the node IDs
     
     # Generate positions for the nodes using a spring layout
     pos = nx.spring_layout(G)  # You can change the layout here
@@ -26,13 +26,11 @@ def draw_graph(graph):
     plt.figure(figsize=(8, 6))
     nx.draw(G, pos, with_labels=True, node_size=500, node_color="lightblue", font_size=10, font_weight="bold", edge_color="gray")
 
-    # Add edge labels (IDs)
-    edge_labels = nx.get_edge_attributes(G, 'id')
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8, font_color='red')
-
     # Show the graph
-    plt.title("Graph Visualization with Edge IDs")
+    plt.title("Graph Visualization")
     plt.show()
+
+
 def complete_graph(n):
     nodes = [Node(id=str(i)) for i in range(1, n+1)]  # Create 5 nodes with string IDs
 

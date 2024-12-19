@@ -4,6 +4,7 @@ from graph import Graph, Node, Edge
 from copy import deepcopy
 from generator import *
 import time
+#from draw import draw_graph
 
 def printInfo(graph):
     print("Number of nodes:", graph.get_nb_nodes())
@@ -30,7 +31,14 @@ def test(n):
     all_times = []
     for vertices in range(1, 50):
         print("Nbr vertices :",vertices)
-        graph = cycle_graph(vertices)
+        #v1 = vertices//2
+        #v2 = vertices-v1
+        #print("V1 :",v1,"V2 :",v2)
+        v2 = int(vertices*10*random.random())
+        print("Vertices :",vertices,"v2",v2)
+        graph = planar_graph(vertices, v2) 
+        
+        
         whole_timer = 0
         if vertices > 20:
             if vertices <35:
@@ -50,6 +58,8 @@ def test(n):
 
 def main():
     test(25)
+    #G = tree_graph(50)
+    #draw_graph(G)
     #graph = multigraph(6, 11)
     # graph = complete_graph(25)
     # #draw_graph(graph)

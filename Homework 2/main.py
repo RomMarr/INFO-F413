@@ -3,6 +3,7 @@ from fastCut import fastCut, fastCut2
 from graph import Graph, Node, Edge
 from copy import deepcopy
 from generator import *
+import time
 
 def printInfo(graph):
     print("Number of nodes:", graph.get_nb_nodes())
@@ -26,59 +27,63 @@ def prepare_node(temp):
 
 
 def test(n):
-    graph = complete_graph(10)
-    moyenne = [0,0,0]
+    all_times = []
+    for vertices in range(1, 50):
+        print("Nbr vertices :",vertices)
+        graph = cycle_graph(vertices)
+        whole_timer = 0
+        if vertices > 20:
+            if vertices <35:
+                n = 10
+            else:
+                n = 5
+        for _ in range(n):
+            graph_copy = deepcopy(graph)
+            timer = time.time()
+            fastCut(graph_copy)
+            timer = time.time() - timer
+            whole_timer += timer
+        all_times.append(whole_timer/n)
 
-    for _ in range(n):
 
-        temp = fastCut(deepcopy(graph))
-        temp2 = fastCut2(deepcopy(graph))
-        temp3 = contract(deepcopy(graph),2)
-
-
-        print('FastCut -> bruteForce :')
-        count = 0
-        for edge in temp:
-            count += 1
-            #print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
-        moyenne[0] += count
-        print(f"Cut {count} : {prepare_node(temp)}")
-        print()
-        print('FastCut2 -> contract :')
-        count = 0
-        for edge in temp2:
-            count += 1
-            print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
-        moyenne[1] += count
-        print(f"Cut {count} : {prepare_node(temp2)}")
-        print()
-        print('Contract :')
-        count = 0
-        for edge in temp3:
-            count += 1
-            #print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
-        moyenne[2] += count
-        print(f"Cut {count} : {prepare_node(temp3)}")
-    
-    moyenne = [i/100 for i in moyenne]
-    print(moyenne)
+    print(all_times)
 
 def main():
-    #test(100)
-    graph = multigraph(6, 11)
-    draw_graph(graph)
-    #printInfo(graph)
-    # print()
-    temp = fastCut2(deepcopy(graph))
-    # new_graph = Graph(temp)
-    count = 0
-    for edge in temp:
-        count += 1
-        print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
-    print(f"Cut {count} : {prepare_node(temp)}")
-    # draw_graph(new_graph)
-    
+    test(25)
+    #graph = multigraph(6, 11)
+    # graph = complete_graph(25)
+    # #draw_graph(graph)
+    # #printInfo(graph)
+    # # print()
+    # t1 = time.time()
+    # temp = fastCut(deepcopy(graph))
+    # t1 = time.time() - t1
 
+    # # new_graph = Graph(temp)
+    # count1 = 0
+    # for edge in temp:
+    #     count1 += 1
+    #     #print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
+    # print(f"Cut {count1} : {prepare_node(temp)}")
+    
+    
+    # t2 = time.time()
+    # temp = fastCut2(deepcopy(graph))
+    # t2 = time.time() - t2
+
+    # new_graph = Graph(temp)
+    # count2 = 0
+    # for edge in temp:
+    #     count2 += 1
+    #     #print(f"Edge {edge.id}: {edge.start_node.id} -> {edge.end_node.id}")
+    # print(f"Cut {count2} : {prepare_node(temp)}")
+
+    # print("T1 :",t1 ,"Count :",count1)
+    # print("T2 :",t2 ,"Count :",count2)
+
+
+
+    # draw_graph(new_graph)
     # print("Edges in the cut:", [edge.id for edge in temp])
     # print("Nodes in the cut:", list(prepare_node(temp)))
     # print("Nodes in the cut:", [edge.start_node.id for edge in temp] + [temp[-1].end_node.id])

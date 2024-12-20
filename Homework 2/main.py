@@ -29,38 +29,41 @@ def prepare_node(temp):
 
 def test(n):
     all_times = []
-    for vertices in range(7, 51):
-        print("Nbr vertices :",vertices)
+    for vertices in range(1, 900, 10):
+        #print("Nbr vertices :",vertices)
         #v1 = vertices//2
         #v2 = vertices-v1
         #print("V1 :",v1,"V2 :",v2)
-        v2 = int(vertices*(2*random.random()))
-        print("Vertices :",vertices,"v2",v2)
-        graph = multigraph(vertices, v2) 
-        
+        #v2 = int(vertices*(2*random.random()))
+        #print("Vertices :",vertices,"v2",v2)
+        v1 = vertices//random.randint(1,(vertices//4)+1)
+        v2 = vertices-v1
+        graph = multigraph(v1,v2)
+        nb_edges = len(graph.edges)
+        print("Nb edges :",nb_edges)
         try:
             whole_timer = 0
             if vertices > 20:
                 if vertices <35:
-                    n = 10
-                else:
                     n = 5
+                else:
+                    n = 3
             for _ in range(n):
-                print(_)
                 graph_copy = deepcopy(graph)
                 timer = time.time()
                 fastCut(graph_copy)
                 timer = time.time() - timer
                 whole_timer += timer
-            all_times.append([whole_timer/n, vertices])
+            all_times.append([nb_edges,whole_timer/n])
         except ValueError:
-            print(all_times)
+            #print(all_times)
+            pass
 
 
     print(all_times)
 
 def main():
-    test(25)
+    test(10)
     #G = planar_graph(25,100)
     #fastCut(G)
     #draw_graph(G)

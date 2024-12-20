@@ -4,7 +4,7 @@ import random
 
 
 def complete_graph(n):
-    nodes = [Node(id=str(i)) for i in range(1, n+1)]  # Create 5 nodes with string IDs
+    nodes = [Node(id=str(i)) for i in range(1, n+1)]  # Create n nodes with string IDs
 
     # Create edges (complete graph: every pair of nodes is connected)
     edges = []
@@ -33,8 +33,8 @@ def bipartite_graph(set1_size, set2_size, edge_probability=0.5):
     
     :param set1_size: The number of nodes in the first set
     :param set2_size: The number of nodes in the second set
-    :param edge_probability: The probability that an edge exists between a node in set 1 and a node in set 2
-    :return: A Graph object containing the bipartite graph
+    :param edge_probability: The probability that an edge exists
+    between a node in set 1 and a node in set 2
     """
     # Create nodes for both sets
     set1 = [Node(str(i)) for i in range(1, set1_size + 1)]
@@ -58,10 +58,8 @@ def bipartite_graph(set1_size, set2_size, edge_probability=0.5):
 
 def tree_graph(n):
     """
-    Generates a random tree with 'n' nodes.
-    
+    Generates a random tree with n nodes.
     :param n: Number of nodes in the tree.
-    :return: A NetworkX graph object representing the tree.
     """
     # Create an empty graph
     tree = Graph()  # Create an empty graph

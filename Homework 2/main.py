@@ -64,6 +64,8 @@ def test(n):
 
 def main():
     test(10)
+    #G = planar_graph(5,7)
+    #draw_graph(G)
     #G = planar_graph(25,100)
     #fastCut(G)
     #draw_graph(G)

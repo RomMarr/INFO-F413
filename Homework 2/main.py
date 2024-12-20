@@ -29,36 +29,40 @@ def prepare_node(temp):
 
 def test(n):
     all_times = []
-    for vertices in range(1, 50):
+    for vertices in range(7, 51):
         print("Nbr vertices :",vertices)
         #v1 = vertices//2
         #v2 = vertices-v1
         #print("V1 :",v1,"V2 :",v2)
-        v2 = int(vertices*10*random.random())
+        v2 = int(vertices*(2*random.random()))
         print("Vertices :",vertices,"v2",v2)
-        graph = planar_graph(vertices, v2) 
+        graph = multigraph(vertices, v2) 
         
-        
-        whole_timer = 0
-        if vertices > 20:
-            if vertices <35:
-                n = 10
-            else:
-                n = 5
-        for _ in range(n):
-            graph_copy = deepcopy(graph)
-            timer = time.time()
-            fastCut(graph_copy)
-            timer = time.time() - timer
-            whole_timer += timer
-        all_times.append(whole_timer/n)
+        try:
+            whole_timer = 0
+            if vertices > 20:
+                if vertices <35:
+                    n = 10
+                else:
+                    n = 5
+            for _ in range(n):
+                print(_)
+                graph_copy = deepcopy(graph)
+                timer = time.time()
+                fastCut(graph_copy)
+                timer = time.time() - timer
+                whole_timer += timer
+            all_times.append([whole_timer/n, vertices])
+        except ValueError:
+            print(all_times)
 
 
     print(all_times)
 
 def main():
     test(25)
-    #G = tree_graph(50)
+    #G = planar_graph(25,100)
+    #fastCut(G)
     #draw_graph(G)
     #graph = multigraph(6, 11)
     # graph = complete_graph(25)

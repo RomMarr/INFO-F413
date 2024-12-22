@@ -1,5 +1,5 @@
 from contract import contract
-from fastCut import fastCut, fastCut2
+from fastCut import fastCut
 from graph import Graph, Node, Edge
 from copy import deepcopy
 from generator import *

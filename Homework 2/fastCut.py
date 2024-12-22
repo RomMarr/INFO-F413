@@ -20,20 +20,6 @@ def fastCut(G: Graph) -> list[Edge]:
         return cut1 if len(cut1) <= len(cut2) else cut2  # Return the min-cut of the two subgraphs
     
 
-def fastCut2(G: Graph) -> list[Edge]:
-    n = G.get_nb_nodes()
-    if n <= 6:
-        return contract(G,2) # min cut by brute force
-    else:
-        t :int =  math.ceil(1 + (n/math.sqrt(2)))
-        g1 : Graph = deepcopy(G)
-        g2 : Graph = deepcopy(G)
-        H1 = Graph(contract(g1, t))
-        H2 = Graph(contract(g2, t))
-        cut1 : list[Edge] = fastCut2(H1)
-        cut2 : list[Edge] = fastCut2(H2)
-        return cut1 if len(cut1) <= len(cut2) else cut2
-
 def minCutBruteForce(graph: Graph) -> list[Edge]:
     """
     Compute the minimum cut of a small graph using brute force and returns the min-cut 

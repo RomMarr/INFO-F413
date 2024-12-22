@@ -26,8 +26,8 @@ def minCutBruteForce(graph: Graph) -> list[Edge]:
     It uses the combinatorial approach to find the minimum cut.
     """
     nodes = graph.nodes
-    n = len(nodes)
-    min_cut_edges = []
+    n : int = len(nodes)
+    min_cut_edges : list[Edge] = []
     min_cut_value = float('inf')
 
     # Generate all possible subsets S of nodes (except empty and full)
@@ -36,7 +36,7 @@ def minCutBruteForce(graph: Graph) -> list[Edge]:
             S = set(subset)
             T = set(nodes) - S  # The complement subset
             # Calculate the edges crossing the cut
-            cut_edges = []
+            cut_edges :list[Edge] = []
             for edge in graph.edges:
                 if (edge.start_node in S and edge.end_node in T) or (edge.start_node in T and edge.end_node in S):
                      cut_edges.append(edge)
@@ -44,5 +44,4 @@ def minCutBruteForce(graph: Graph) -> list[Edge]:
             if len(cut_edges) < min_cut_value:
                 min_cut_value = len(cut_edges)
                 min_cut_edges = cut_edges
-
     return min_cut_edges
